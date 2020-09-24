@@ -1,0 +1,31 @@
+{
+  "name": "jocker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "compile": "truffile compile",
+    "migrate_reset": "truffle migrate --reset",
+    "migrate_to": "truffle migrate --to 3",
+    "test": "truffle test",
+    "pure_test": "truffle test --migrations_directory migrations_null",
+    "test_lord_joker": "truffle test ./test/JokerLord.test.js --migrations_directory migrations_null"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vjocker/jocker.git"
+  },
+  "author": "jocker",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vjocker/jocker/issues"
+  },
+  "homepage": "https://github.com/vjocker/jocker#readme",
+  "dependencies": {
+    "@openzeppelin/contracts": "^3.2.0",
+    "@openzeppelin/test-helpers": "^0.5.6"
+  }
+}
