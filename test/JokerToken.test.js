@@ -62,6 +62,27 @@ contract('JokerToken', ([alice, bob, carol, leo]) => {
       );
     });
 
+    it('should fail if you try to approve the same user again', async () => {
+      await this.joker.mint(alice, '1000', { from: alice });
+      await this.joker.approve(carol, '100', { from: alice });
+      const carolAll = await this.joker.allowance(alice, carol);
+      assert.equal(carolAll.valueOf(), '100');
+      await this.joker.approve(bob, '100', { from: alice });
+      const bobAll = await this.joker.allowance(alice, bob);
+      assert.equal(bobAll.valueOf(), '100');
+      await expectRevert(
+        this.joker.approve(carol, '50', { from: alice }),
+        'JOKER: use increaseAllowance or decreaseAllowance instead',
+      );
+      await expectRevert(
+        this.joker.approve(carol, '150', { from: alice }),
+        'JOKER: use increaseAllowance or decreaseAllowance instead',
+      );
+      await this.joker.approve(carol, '0', { from: alice });
+      const carolAll2 = await this.joker.allowance(alice, carol);
+      assert.equal(carolAll2.valueOf(), '0');
+    });
+
     it('should supply token transferFrom properly', async () => {
       await this.joker.mint(alice, '100', { from: alice });
       await this.joker.mint(bob, '1000', { from: alice });
@@ -128,6 +149,13 @@ contract('JokerToken', ([alice, bob, carol, leo]) => {
       await this.joker.delegate(carol, { from: bob });
       var bobDel = await this.joker.delegates(bob);
       assert.equal(bobDel.valueOf(), carol);
+    });
+
+    it('should fail if you delegate to the same user', async () => {
+      await expectRevert(
+        this.joker.delegate(carol, { from: bob }),
+        'JOKER::delegate: delegatee not change',
+      );
     });
 
     it('should have correct CurrentVotes and numCheckpoints', async () => {
