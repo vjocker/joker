@@ -63,6 +63,11 @@ contract JokerToken is ERC20("JokerToken", "JOKER"), Ownable {
         return true;
     }
 
+    function approve(address spender, uint256 amount) public virtual override returns (bool) {
+		require((amount == 0) || (allowance(_msgSender(), spender) == 0), "JOKER: use increaseAllowance or decreaseAllowance instead");
+		return super.approve(spender, amount);
+    }
+
     /**
      * @notice Delegate votes from `msg.sender` to `delegatee`
      * @param delegator The address to get delegatee for
@@ -80,6 +85,7 @@ contract JokerToken is ERC20("JokerToken", "JOKER"), Ownable {
     * @param delegatee The address to delegate votes to
     */
     function delegate(address delegatee) external {
+        require(delegatee != _delegates[msg.sender], "JOKER::delegate: delegatee not change");
         return _delegate(msg.sender, delegatee);
     }
 
