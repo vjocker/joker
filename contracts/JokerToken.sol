@@ -64,8 +64,8 @@ contract JokerToken is ERC20("JokerToken", "JOKER"), Ownable {
     }
 
     function approve(address spender, uint256 amount) public virtual override returns (bool) {
-		require((amount == 0) || (allowance(_msgSender(), spender) == 0), "JOKER: use increaseAllowance or decreaseAllowance instead");
-		return super.approve(spender, amount);
+        require((amount == 0) || (allowance(_msgSender(), spender) == 0), "JOKER: use increaseAllowance or decreaseAllowance instead");
+        return super.approve(spender, amount);
     }
 
     /**
